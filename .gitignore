@@ -1,0 +1,9 @@
+.csv
+*.csv
+.venv/
+.env
+__pycache__/     
+*.pyc            
+*.pyo
+*.pyd
+qwe.py
