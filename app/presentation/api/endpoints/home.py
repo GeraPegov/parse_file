@@ -1,5 +1,8 @@
-from fastapi import APIRouter, Request, UploadFile
+from fastapi import APIRouter, Depends, File, Request, UploadFile
 from fastapi.templating import Jinja2Templates
+
+from app.application.services.parse_service import ParseService
+from app.presentation.api.dependencies import get_parse_service
 
 
 router = APIRouter()
@@ -17,5 +20,9 @@ async def home(
 
 @router.post('/parse')
 async def parse(
-    file: UploadFile = File(...)
-)
+    file: UploadFile = File(...),
+    parse_service: ParseService = Depends(get_parse_service())
+):
+    contents = await file.read()
+    await parse_service.delete_dublicate(contents)
+    
