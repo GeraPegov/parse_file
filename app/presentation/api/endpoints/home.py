@@ -1,9 +1,8 @@
 from fastapi import APIRouter, Depends, File, Request, UploadFile
 from fastapi.templating import Jinja2Templates
 
-from app.application.services.parse_service import ParseService
-from app.presentation.api.dependencies import get_parse_service
-
+from app.application.services.parse_service import TourismService
+from app.presentation.dependencies.get_tourism_service import get_tourism_service
 
 router = APIRouter()
 
@@ -21,8 +20,10 @@ async def home(
 @router.post('/parse')
 async def parse(
     file: UploadFile = File(...),
-    parse_service: ParseService = Depends(get_parse_service())
+    tourism_service: TourismService = Depends(get_tourism_service)
 ):
     contents = await file.read()
-    await parse_service.delete_dublicate(contents)
+    result = await tourism_service.parse_file(contents)
+
+    return result
     

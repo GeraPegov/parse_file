@@ -1,8 +1,8 @@
 import io
-from fastapi import UploadFile
-from sqlalchemy.ext.asyncio import AsyncSession
+from datetime import datetime
 import pandas as pd
 import numpy as np
+
 
 from app.infrastructure.database.repositories.tourism_repository import TourismRepository
 
@@ -42,34 +42,28 @@ class TourismService:
             df['DATE_OF_ARRIVAL'] = pd.to_datetime(df['DATE_OF_ARRIVAL'], errors='coerce')
         return df
 
-    '''
-    Сначала привели типы numpy для валидации исключений(NaN, пробелы и прочие ошибки)
-    Затем создали новый список словарей с приведением пайтон типов
-    Через isinstance мы исключили возможность приведение NaN к типу
-    '''
-    async def parse_file(self, file: bytes, chunk_size: int = 50000):
-     
+    async def parse_file(
+            self,
+            file: bytes,
+            chunk_size: int = 2500):
+        print(datetime.now())
         data = io.BytesIO(file)
-
-        for chunk in pd.read_csv(data, chunksize=chunk_size):
+        data.seek(0)
+        for chunk in pd.read_csv(data, chunksize=chunk_size, encoding='utf-8'):
             result = self.clean_chunk(chunk)
 
             records = result.to_dict('records')
-            cleaned = []
             for record in records:
-                cleaned_rec = {}
                 for key, value in record.items():
-                    key_lower = key.lower()
                     if pd.isna(value):
-                        cleaned_rec[key_lower] = None
-                    elif isinstance(value, np.integer):
-                        cleaned_rec[key_lower] = int(value)
-                    elif isinstance(value, np.floating):
-                        cleaned_rec[key_lower] = float(value)
+                        record[key] = None
+                    elif isinstance(value, (np.integer, int)):
+                        record[key] = int(value)
+                    elif isinstance(value, (np.floating, float)):
+                        record[key] = float(value)
                     elif isinstance(value, pd.Timestamp):
-                        cleaned_rec[key_lower] = value.date()
-                    else:
-                        cleaned_rec[key_lower] = str(value)
-                cleaned.append(cleaned_rec)
-        
-            await self.repo.save(cleaned)
+                        record[key] = value.date()
+
+            await self.repo.save(records)
+        print(datetime.now())
+        return {'status': 'success'}

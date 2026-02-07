@@ -1,10 +1,17 @@
 import asyncio
+from pathlib import Path
+import sys
+
+root = Path(__file__).parent.parent
+sys.path.insert(0, str(root))
 
 from app.infrastructure.connection import (
     create_database_if_not_exists,
     prod_engine,
 )
 
+# BASE_DIR = Path(__file__).parent
+# print(BASE_DIR)
 
 async def init_production_db():
 
