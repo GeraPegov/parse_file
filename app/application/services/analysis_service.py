@@ -12,3 +12,12 @@ class AnalysisService:
     
     async def count_tourist_with_every_month(self):
         return await self.repo.tourists_for_every_month()
+    
+    async def count_tourists_for_random_period(self):
+        return await self.repo.tourists_for_random_period()
+    
+    async def count_from_country(self):
+        return await self.repo.from_country()
+    
+    async def count_from_region(self):
+        return await self.repo.from_region()

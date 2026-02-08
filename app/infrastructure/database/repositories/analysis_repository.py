@@ -1,5 +1,3 @@
-from datetime import date
-from re import sub
 from sqlalchemy import select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -38,6 +36,7 @@ class AnalysisRepository(IAnalysisRepository):
             
         return dict_response
 
+
     async def tourists_for_random_period(self):
         subquery = select(
             TourismData.DATE_OF_ARRIVAL.label('date'),
@@ -51,10 +50,47 @@ class AnalysisRepository(IAnalysisRepository):
                 func.sum(subquery.c.visitors_sum).label('sum')
                 )
         )
-        first_date, last_date, sum_of_period = request.all()
+        data = request.all()[0]
+
+        first_date, last_date, sum_of_period = data
+
         dict_response = {
             'Дата от:': first_date,
             'До:': last_date,
             'Количество человек за период:': sum_of_period
         }
         return dict_response
+
+
+    async def from_country(self):
+        data_orm = await self.session.execute(
+            select(
+                TourismData.HOME_COUNTRY,
+                func.count(TourismData.VISITORS_CNT))
+                .group_by(TourismData.HOME_COUNTRY)
+        )
+
+        data = data_orm.all()
+        response_dict = {}
+
+        for i in data:
+            country, quantity = i
+            response_dict[country] = quantity
+        return response_dict
+
+
+    async def from_region(self):
+        data_orm = await self.session.execute(
+            select(
+                TourismData.HOME_REGION,
+                func.count(TourismData.VISITORS_CNT))
+                .group_by(TourismData.HOME_REGION)
+        )
+
+        data = data_orm.all()
+        response_dict = {}
+
+        for i in data:
+            region, quantity = i
+            response_dict[region] = quantity
+        return response_dict

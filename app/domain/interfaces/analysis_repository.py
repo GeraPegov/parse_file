@@ -13,3 +13,15 @@ class IAnalysisRepository(ABC):
     @abstractmethod
     async def tourists_for_every_month(self):
         pass
+
+    @abstractmethod
+    async def tourists_for_random_period(self):
+        pass
+
+    @abstractmethod
+    async def from_country(self):
+        pass
+
+    @abstractmethod
+    async def from_region(self):
+        pass

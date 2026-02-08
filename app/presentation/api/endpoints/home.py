@@ -34,6 +34,9 @@ async def analysis(
     analysis_service: AnalysisService = Depends(get_analysis_service)
 ):
     # data = await analysis_service.count_tourist_with_all_time()
-    data = await analysis_service.count_tourist_with_every_month()
+    # data = await analysis_service.count_tourist_with_every_month()
+    # data = await analysis_service.count_tourists_for_random_period()
+    # data = await analysis_service.count_from_country()
+    data = await analysis_service.count_from_region()
     return data
     
