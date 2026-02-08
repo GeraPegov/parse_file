@@ -1,9 +1,10 @@
 from sqlalchemy import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from app.domain.interfaces.parse_repository import IParseRepository
 from app.infrastructure.database.models.tourismdata import TourismData
 
-class TourismRepository:
+class ParseRepository(IParseRepository):
     def __init__(self, session: AsyncSession):
         self.session = session
 

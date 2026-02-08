@@ -4,11 +4,11 @@ import pandas as pd
 import numpy as np
 
 
-from app.infrastructure.database.repositories.tourism_repository import TourismRepository
+from app.domain.interfaces.parse_repository import IParseRepository
 
 
-class TourismService:
-    def __init__(self, repo: TourismRepository):
+class ParseService:
+    def __init__(self, repo: IParseRepository):
         self.repo = repo
 
     
