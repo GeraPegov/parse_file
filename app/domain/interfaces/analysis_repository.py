@@ -25,3 +25,11 @@ class IAnalysisRepository(ABC):
     @abstractmethod
     async def from_region(self):
         pass
+
+    @abstractmethod
+    async def demographic_presentation(self):
+        pass
+
+    @abstractmethod
+    async def average_tourists(self):
+        pass

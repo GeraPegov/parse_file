@@ -1,4 +1,4 @@
-from sqlalchemy import select, func
+from sqlalchemy import desc, select, func
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.domain.interfaces.analysis_repository import IAnalysisRepository
@@ -52,7 +52,7 @@ class AnalysisRepository(IAnalysisRepository):
         )
         data = request.all()[0]
 
-        first_date, last_date, sum_of_period = data
+        last_date, first_date, sum_of_period = data
 
         dict_response = {
             'Дата от:': first_date,
@@ -66,7 +66,7 @@ class AnalysisRepository(IAnalysisRepository):
         data_orm = await self.session.execute(
             select(
                 TourismData.HOME_COUNTRY,
-                func.count(TourismData.VISITORS_CNT))
+                func.sum(TourismData.VISITORS_CNT))
                 .group_by(TourismData.HOME_COUNTRY)
         )
 
@@ -75,7 +75,8 @@ class AnalysisRepository(IAnalysisRepository):
 
         for i in data:
             country, quantity = i
-            response_dict[country] = quantity
+            if quantity != 0:
+                response_dict[country] = quantity
         return response_dict
 
 
@@ -83,7 +84,7 @@ class AnalysisRepository(IAnalysisRepository):
         data_orm = await self.session.execute(
             select(
                 TourismData.HOME_REGION,
-                func.count(TourismData.VISITORS_CNT))
+                func.sum(TourismData.VISITORS_CNT))
                 .group_by(TourismData.HOME_REGION)
         )
 
@@ -92,5 +93,55 @@ class AnalysisRepository(IAnalysisRepository):
 
         for i in data:
             region, quantity = i
-            response_dict[region] = quantity
+            if quantity != 0:
+                response_dict[region] = quantity
+        return response_dict
+
+
+    async def demographic_presentation(self):
+        data_orm = await self.session.execute(
+            select(
+                TourismData.AGE,
+                TourismData.GENDER,
+                func.count(TourismData.id)
+                )
+            .group_by(TourismData.AGE, TourismData.GENDER)
+        )
+
+        data = data_orm.all()
+        response_dict = {}
+
+        for i in data:
+            age, gender, quantity = i
+            if quantity != 0:
+                response_dict[f'Возраст: {age}; Пол: {gender}'] = quantity
+            
+        return response_dict
+    
+
+    async def average_tourists(self):
+        data_orm = await self.session.execute(select(
+                func.avg(TourismData.SPENT).label('avg_spent'),
+                func.avg(TourismData.DAYS_CNT).label('avg_days'),
+                func.count(TourismData.id).label('quantity_records'),
+                TourismData.INCOME,
+                TourismData.AGE,
+                TourismData.GENDER
+            ).group_by(TourismData.GENDER, TourismData.AGE, TourismData.INCOME).order_by(desc('quantity_records')).limit(1))
+
+
+        data = data_orm.all()
+        
+        response_dict = {}
+
+        for i in data:
+            spent, days, quantity, income, age, gender = i
+            response_dict['Типичный турист'] = {
+                'Траты в городе': round(spent*1000000),
+                'Количество дней в городе': round(days),
+                'Доход туриста': income,
+                'Возраст': age,
+                'Пол': gender
+            }
+        
         return response_dict

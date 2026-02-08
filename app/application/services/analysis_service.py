@@ -21,3 +21,9 @@ class AnalysisService:
     
     async def count_from_region(self):
         return await self.repo.from_region()
+    
+    async def demographic_presentation(self):
+        return await self.repo.demographic_presentation()
+    
+    async def average_tourists(self):
+        return await self.repo.average_tourists()
