@@ -33,12 +33,7 @@ async def parse(
 async def analysis(
     analysis_service: AnalysisService = Depends(get_analysis_service)
 ):
-    # data = await analysis_service.count_tourist_with_all_time()
-    # data = await analysis_service.count_tourist_with_every_month()
-    # data = await analysis_service.count_tourists_for_random_period()
-    # data = await analysis_service.count_from_country()
-    # data = await analysis_service.count_from_region()
-    # data = await analysis_service.demographic_presentation()
-    data = await analysis_service.average_tourists()
-    return data
+    data = await analysis_service.analysis_result()
+
+    return 'ok'
     

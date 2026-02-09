@@ -33,3 +33,7 @@ class IAnalysisRepository(ABC):
     @abstractmethod
     async def average_tourists(self):
         pass
+
+    @abstractmethod
+    async def profit_event(self):
+        pass
