@@ -1,18 +1,119 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Анализ туризма</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 24px;
+            text-align: center;
+        }
+
+        form {
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 2px dashed #667eea;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        input[type="file"]:hover {
+            border-color: #764ba2;
+            background: #f8f9ff;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        .divider {
+            height: 1px;
+            background: #e0e0e0;
+            margin: 25px 0;
+        }
+
+        .danger-btn {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        }
+
+        .danger-btn:hover {
+            box-shadow: 0 5px 20px rgba(245, 87, 108, 0.4);
+        }
+    </style>
 </head>
 <body>
-    <form action="/parse" method="post" enctype="multipart/form-data" class="form_send_file">
-        <input name="file" type="file" class="send_file">
-        <button type="submit">send</button>
-    </form>
+    <div class="container">
+        <h1>🌍 Анализ туризма</h1>
+        
+        <form action="/tourism-data" method="post" enctype="multipart/form-data">
+            <input name="upload_file" type="file" accept=".csv" required>
+            <button type="submit">📤 Загрузить данные</button>
+        </form>
 
-    <form action="/analysis" method="get">
-        <button type="submit">send</button>
-    </form>
+        <div class="divider"></div>
+
+        <form action="/tourism-data/analysis" method="get">
+            <button type="submit">📊 Анализ данных</button>
+        </form>
+
+        <div class="divider"></div>
+
+        <form action="/tourism-data/clear" method="post" onsubmit="return confirm('Точно удалить все данные?')">
+            <button type="submit" class="danger-btn">🗑️ Очистить базу</button>
+        </form>
+    </div>
 </body>
 </html>

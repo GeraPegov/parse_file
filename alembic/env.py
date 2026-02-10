@@ -24,6 +24,7 @@ from app.infrastructure.config import settings
 # from myapp import mymodel
 from app.infrastructure.database.models.tourismdata import TourismData
 from app.infrastructure.connection import Base
+
 # target_metadata = mymodel.Base.metadata
 target_metadata = Base.metadata
 # TourismData.metadata.bind = target_metadata
@@ -32,8 +33,7 @@ target_metadata = Base.metadata
 # can be acquired:
 # my_important_option = config.get_main_option("my_important_option")
 # ... etc.
-config.set_main_option('sqlalchemy.url', settings.PROD_DB_URL)
-
+config.set_main_option("sqlalchemy.url", settings.PROD_DB_URL)
 
 
 def run_migrations_offline() -> None:

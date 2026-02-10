@@ -1,4 +1,3 @@
-
 from datetime import date
 from sqlalchemy import BigInteger, Date, Float, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
@@ -6,7 +5,7 @@ from app.infrastructure.connection import Base
 
 
 class TourismData(Base):
-    __tablename__ = 'tourism'
+    __tablename__ = "tourism"
 
     id: Mapped[int] = mapped_column(BigInteger, primary_key=True)
     DATE_OF_ARRIVAL: Mapped[date | None] = mapped_column(Date)

@@ -1,5 +1,6 @@
 
 import json
+
 from app.domain.interfaces.analysis_repository import IAnalysisRepository
 
 
@@ -7,23 +8,21 @@ class AnalysisService:
     def __init__(self, repo: IAnalysisRepository):
         self.repo = repo
 
-    async def analysis_result(self):
+    async def generate_analysis_report(self):
         coroutines = [
-            self.repo.tourists_for_all_dates(),
-            self.repo.tourists_for_every_month(),
-            self.repo.tourists_for_random_period(),
-            self.repo.from_country(),
-            self.repo.from_region(),
-            self.repo.demographic_presentation(),
-            self.repo.average_tourists(),
-            self.repo.profit_event()
+            self.repo.get_tourists_for_all_dates(),
+            self.repo.get_tourists_for_every_month(),
+            self.repo.get_tourists_for_random_period(),
+            self.repo.get_tourists_by_country(),
+            self.repo.get_tourists_by_region(),
+            self.repo.get_demographic_distribution(),
+            self.repo.get_typical_tourist_profile(),
+            self.repo.get_most_valuable_segments()
         ]
 
-        data = [await record for record in coroutines]
-        print(data)
-        with open('analysis_tourism.json', 'w', encoding='utf-8') as f:
-            json.dump(data, f, ensure_ascii=False, default=str, indent=2)
+        execution_coroutines = [await coroutine for coroutine in coroutines]
+        filepath = 'analysis_tourism.json'
+        with open(filepath, 'w', encoding='utf-8') as f:
+            json.dump(execution_coroutines, f, ensure_ascii=False, default=str, indent=2)
+        return filepath
 
-
-
-    
