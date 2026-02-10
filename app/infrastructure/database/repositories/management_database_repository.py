@@ -15,6 +15,3 @@ class ManagementDatabaseRepository(IManagementDatabaseRepository):
         await self.session.commit()
 
         return {"status": "success drop all"}
-
-    async def create_table(self):
-        pass

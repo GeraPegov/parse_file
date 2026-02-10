@@ -10,7 +10,3 @@ class IManagementDatabaseRepository(ABC):
     @abstractmethod
     async def drop_table(self):
         pass
-
-    @abstractmethod
-    async def create_table(self):
-        pass

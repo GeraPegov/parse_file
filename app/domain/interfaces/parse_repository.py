@@ -7,5 +7,5 @@ class IParseRepository(ABC):
         pass
 
     @abstractmethod
-    async def save(self, records: list[dict]):
+    async def save(self, records: list[dict]) -> dict:
         pass

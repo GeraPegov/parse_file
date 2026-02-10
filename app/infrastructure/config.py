@@ -3,6 +3,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 BASE_DIR = Path(__file__).parent.parent.parent
 
+
 class Settings(BaseSettings):
     ADMIN_DB_URL: str
     TEST_DB_URL: str
