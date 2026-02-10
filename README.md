@@ -10,7 +10,7 @@ cd parse-file
 ```bash
 python -m venv .venv
 
-#Windows activate
+# Windows
 .venv\Scripts\activate
 
 # Linux/Mac
@@ -28,12 +28,11 @@ cp .env.example .env
 
 POSTGRES_USER=user_name
 POSTGRES_PASSWORD=password_name
-POSTGRES_DB=db_name
 
 #host and port дефолтные для локального подключения
-ADMIN_DB_URL=postgresql+asyncpg://user_name:password_name@localhost:5432/db_name
+ADMIN_DB_URL=postgresql+asyncpg://user_name:password_name@localhost:5432/postgres
 PROD_DB_URL=postgresql+asyncpg://user_name:password_name@localhost:5432/tourism
-TEST_DB_URL=postgresql+asyncpg://your_user:your_password@localhost:5432/testtourism
+TEST_DB_URL=postgresql+asyncpg://user_name:your_password@localhost:5432/testtourism
 ```
 
 ## Настройка базы данных
@@ -82,18 +81,18 @@ uvicorn main:app --reload
 
 1. Откройте **http://localhost:8000**
 2. Нажмите **"Выбрать файл"** и загрузите CSV файл
-3. Нажмите **"📤 Загрузить данные"**
+3. Нажмите **"Загрузить данные"**
 
 Данные загружаются около 2 минут
 Будет JSON-ответ {'status': success}
 ### 2. Получение аналитики
 
-1. Нажмите **"📊 Анализ данных"**
+1. Нажмите **"Анализ данных"**
 2. Скачается JSON файл `tourism_analysis.json` с отчётом
 
 ### 3. Очистка данных
 
-1. Нажмите **"🗑️ Очистить базу"**
+1. Нажмите **"Очистить базу"**
 2. Подтвердите действие
 3. Все данные будут удалены из БД
 
