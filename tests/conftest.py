@@ -1,8 +1,9 @@
 import sys
-
+from pathlib import Path
 import pytest_asyncio
 
-sys.path.insert(0, 'Z:\\Coding\\python_developer')
+BASE_DIR = Path(__file__).parent.parent
+sys.path.insert(0, str(BASE_DIR))
 
 import asyncio
 from datetime import date
