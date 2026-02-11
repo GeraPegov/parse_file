@@ -10,7 +10,6 @@ class Settings(BaseSettings):
     PROD_DB_URL: str
     POSTGRES_USER: str
     POSTGRES_PASSWORD: str
-    POSTGRES_DB: str
 
     model_config = SettingsConfigDict(env_file=BASE_DIR / ".env")
 
